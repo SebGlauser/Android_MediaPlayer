@@ -7,7 +7,10 @@ import android.view.MotionEvent;
 import android.view.View;
 
 /**
- * Created by seg on 16.10.17.
+ * @author Sebastien Glauser
+ * @version 1.0.0
+ * @since 18.10.2017
+ * @brief When a song is pressed listener
  */
 
 

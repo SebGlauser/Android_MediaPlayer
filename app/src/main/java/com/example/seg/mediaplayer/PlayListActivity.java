@@ -49,6 +49,8 @@ public class PlayListActivity extends AppCompatActivity {
 
         setStatusBarGradient(this);
 
+
+        // Request permission
         if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED) {
 
@@ -61,21 +63,28 @@ public class PlayListActivity extends AppCompatActivity {
 
         }
 
-        mSongListAdapter = new SongListRecyclerViewAdapter(mSongList);
+        // get the view
         mRecyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
-        mRecyclerView.setHasFixedSize(true);
-        mRecyclerView.setAdapter(mSongListAdapter);
+
+        // Instantiate the adapter
+        mSongListAdapter = new SongListRecyclerViewAdapter(mSongList);
 
         mLayoutManager = new LinearLayoutManager(this);
 
+        // Create a divider
         mDividerItemDecoration = new DividerItemDecoration(
                 mRecyclerView.getContext(),
                 LinearLayout.VERTICAL
         );
         mDividerItemDecoration.setDrawable(this.getResources().getDrawable(R.drawable.sk_line_divider));
-        mRecyclerView.addItemDecoration(mDividerItemDecoration);
 
+        // build the recycler
+        mRecyclerView.setHasFixedSize(true);
+        mRecyclerView.setAdapter(mSongListAdapter);
+        mRecyclerView.addItemDecoration(mDividerItemDecoration);
         mRecyclerView.setLayoutManager(mLayoutManager);
+
+        // Set when a item is selected
         mRecyclerView.addOnItemTouchListener(
                 new RecyclerSongClickListener(this, new RecyclerSongClickListener.OnItemClickListener() {
                     @Override
@@ -88,7 +97,7 @@ public class PlayListActivity extends AppCompatActivity {
                 })
         );
 
-
+        // Get all song
         SongListSingleton.populate(this);
         mSongListAdapter.notifyDataSetChanged();
     }
@@ -108,24 +117,6 @@ public class PlayListActivity extends AppCompatActivity {
             background.setEnterFadeDuration(2000);
             background.setExitFadeDuration(4000);
             background.start();
-        }
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode,
-                                           String permissions[], int[] grantResults) {
-        switch (requestCode) {
-            case MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE: {
-                // If request is cancelled, the result arrays are empty.
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-
-
-                } else {
-
-                }
-                return;
-            }
         }
     }
 }

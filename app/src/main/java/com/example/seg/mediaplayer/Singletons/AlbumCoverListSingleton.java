@@ -15,7 +15,10 @@ import java.util.HashMap;
 import java.util.Iterator;
 
 /**
- * Created by seg on 18.10.17.
+ * @Author Sebastien Glauser
+ * @date 18.10.2017
+ * @brief This singleton is a hashmap with the cover and the album id. The main purpose of this
+ * class is to improve significantly the performance of the recyclerView
  */
 
 public class AlbumCoverListSingleton {
@@ -30,17 +33,19 @@ public class AlbumCoverListSingleton {
     private AlbumCoverListSingleton() {
     }
 
-    public static Bitmap getBitmap(Context context, Long albumId)
-    {
+    /**
+     * @brief T
+     */
+
+    public static Bitmap getBitmap(Context context, Long albumId) {
         Iterator myVeryOwnIterator = mBitmapMap.keySet().iterator();
-        while(myVeryOwnIterator.hasNext()) {
+        while (myVeryOwnIterator.hasNext()) {
             Long key = (Long) myVeryOwnIterator.next();
             if (key == albumId)
                 return mBitmapMap.get(key);
         }
         Bitmap bm = null;
-        try
-        {
+        try {
             final Uri sArtworkUri = Uri
                     .parse("content://media/external/audio/albumart");
 
@@ -49,20 +54,17 @@ public class AlbumCoverListSingleton {
             ParcelFileDescriptor pfd = context.getContentResolver()
                     .openFileDescriptor(uri, "r");
 
-            if (pfd != null)
-            {
+            if (pfd != null) {
                 FileDescriptor fd = pfd.getFileDescriptor();
                 bm = BitmapFactory.decodeFileDescriptor(fd);
-            }
-            else
-            {
+            } else {
                 return null;
             }
 
         } catch (Exception e) {
         }
 
-        mBitmapMap.put(albumId,bm);
+        mBitmapMap.put(albumId, bm);
         return bm;
     }
 }

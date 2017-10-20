@@ -16,7 +16,10 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * Created by seg on 12.10.17.
+ * @author Sebastien Glauser
+ * @version 1.0.0
+ * @since 18.10.2017
+ * @brief The recycler adapter of a list of song
  */
 
 public class SongListRecyclerViewAdapter extends RecyclerView.Adapter<SongListRecyclerViewAdapter.ViewHolder>{
@@ -36,9 +39,15 @@ public class SongListRecyclerViewAdapter extends RecyclerView.Adapter<SongListRe
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
+
+        // Get back the song on fx of the position
         Song song = songsList.get(position);
 
+        // Create a format for the duration
+        // @// TODO: 20.10.17 Manage more than 1h durations
         SimpleDateFormat sdf = new SimpleDateFormat("mm:ss");
+
+        // Fill the layout
         holder.title.setText(song.getName());
         holder.artist.setText(song.getAuthor());
         if( song.getAlbumart() != null )
@@ -60,6 +69,7 @@ public class SongListRecyclerViewAdapter extends RecyclerView.Adapter<SongListRe
 
         public ViewHolder(View itemView) {
             super(itemView);
+            // Get back items on the layout
             title = itemView.findViewById(R.id.rv_song_title);
             artist = itemView.findViewById(R.id.rv_song_artist);
             duration = itemView.findViewById(R.id.rv_duration);

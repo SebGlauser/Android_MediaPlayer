@@ -3,7 +3,9 @@ package com.example.seg.mediaplayer.Singletons;
 import android.media.MediaPlayer;
 
 /**
- * Created by seg on 16.10.17.
+ * @Author Sebastien Glauser
+ * @date 18.10.2017
+ * @brief This singleton contain the MediaPlayer
  */
 
 public class MediaPlayerSingleton {

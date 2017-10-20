@@ -12,14 +12,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by seg on 18.10.17.
+ * @Author Sebastien Glauser
+ * @date 20.10.2017
+ * @brief This singleton contain the list of song
  */
 
 public class SongListSingleton {
-    private static final SongListSingleton ourInstance = new SongListSingleton();
     private static List<Song> mSongList = new ArrayList<>();
     private static Boolean mIsPopulated = Boolean.FALSE;
 
+
+    /**
+     * @return The list of song
+     * @breif This function is used to return the list of song
+     */
     public static List<Song> getInstance() {
         return mSongList;
     }
@@ -28,7 +34,7 @@ public class SongListSingleton {
     }
 
     public static void populate(Context context) {
-        if( mIsPopulated ) {
+        if (mIsPopulated) {
             return;
         }
         mIsPopulated = Boolean.TRUE;
@@ -36,7 +42,7 @@ public class SongListSingleton {
         ContentResolver musicResolver = context.getContentResolver();
         Uri musicUri = android.provider.MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
         Cursor musicCursor = musicResolver.query(musicUri, null, null, null, null);
-        if(musicCursor!=null && musicCursor.moveToFirst()){
+        if (musicCursor != null && musicCursor.moveToFirst()) {
             //get columns
             int titleColumn = musicCursor.getColumnIndex
                     (android.provider.MediaStore.Audio.Media.TITLE);
