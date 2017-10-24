@@ -16,6 +16,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
@@ -30,9 +31,10 @@ import java.util.List;
 
 
 /**
- * @Author Sebastien Glauser
- * @date 20.10.2017
- * @brief This activity can play, change, pause a song.
+ * This activity can play, change, pause a song.
+ *
+ * @author Sebastien Glauser
+ * @date  20.10.2017
  */
 
 
@@ -56,6 +58,7 @@ public class PlayerActivity extends AppCompatActivity {
     private ImageView img;
     private ImageButton previous_btn, play_pause_btn, next_btn;
     private SeekBar seekProgress;
+    public LinearLayout rootView;
 
     private SeekBarAsyncTaskRunner mSeekBarAsyncUpdater;
 
@@ -64,8 +67,6 @@ public class PlayerActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_player);
-        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(this.getResources().getColor(R.color.wi30)));
-        setStatusBarGradient(this);
 
         // Get back item from layout
         title = (TextView) findViewById(R.id.song_title);
@@ -77,6 +78,11 @@ public class PlayerActivity extends AppCompatActivity {
         previous_btn = (ImageButton) findViewById(R.id.previous_btn);
         play_pause_btn = (ImageButton) findViewById(R.id.play_pause_btn);
         next_btn = (ImageButton) findViewById(R.id.next_btn);
+        rootView = (LinearLayout) findViewById(R.id.root_layout);
+
+
+        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(this.getResources().getColor(R.color.wi30)));
+        setStatusBarGradient(this);
 
 
         // Get back data from the intent
@@ -164,21 +170,29 @@ public class PlayerActivity extends AppCompatActivity {
     }
 
     /**
-     * @brief This function start the song pointed by the mCurrentSongIndex and update information
+     * This function start the song pointed by the mCurrentSongIndex and update information
      */
     public void startSong() {
-        // get back the current song
-        Song song = mSongList.get(mCurrentSongIndex);
 
-        // Create a format to print the time
-        //@// TODO: 20.10.17 Add if time > 1h
-        SimpleDateFormat sdf = new SimpleDateFormat("mm:ss");
+        // get back the current song
+        Song song = getSongFromIndex();
+
+        if (song == null)
+            return;
+        SimpleDateFormat sdf;
+        if (song.getDuration() < 3600000) {
+            sdf = new SimpleDateFormat("mm:ss");
+        } else {
+            sdf = new SimpleDateFormat("hh:mm:ss");
+        }
+
+        duration.setText(sdf.format(new Date(song.getDuration())));
+        timeProgression.setText(sdf.format(new Date(0)));
 
         // Set information in the view
         title.setText(song.getName());
         artist.setText(song.getAuthor());
-        duration.setText(sdf.format(new Date(song.getDuration())));
-        timeProgression.setText(sdf.format(new Date(0)));
+
         if (song.getAlbumart() != null)
             img.setImageBitmap(song.getAlbumart());
         else
@@ -203,12 +217,22 @@ public class PlayerActivity extends AppCompatActivity {
         play_pause_btn.setImageResource(R.drawable.ic_pause_black_24dp);
     }
 
+    private Song getSongFromIndex() {
+        Song song = null;
+        try {
+            song = mSongList.get(mCurrentSongIndex);
+        } catch (IndexOutOfBoundsException e) {
+            e.printStackTrace();
+        }
+        return song;
+    }
+
     /**
-     * @brief This function pause the song and adapt the view
+     * This function pause the song and adapt the view
      */
     public void pauseSong() {
         // Pause the button and start the player
-        if(mMediaPlayer.isPlaying()) {
+        if (mMediaPlayer.isPlaying()) {
             mMediaPlayer.pause();
             isPaused = true;
             play_pause_btn.setImageResource(R.drawable.ic_play_arrow_black_24dp);
@@ -216,10 +240,10 @@ public class PlayerActivity extends AppCompatActivity {
     }
 
     /**
-     * @brief Restart the song
+     * Restart the song
      */
     public void continueSong() {
-        if(! mMediaPlayer.isPlaying() ) {
+        if (!mMediaPlayer.isPlaying()) {
             mMediaPlayer.start();
             isPaused = false;
             play_pause_btn.setImageResource(R.drawable.ic_pause_black_24dp);
@@ -228,13 +252,16 @@ public class PlayerActivity extends AppCompatActivity {
 
 
     /**
-     * @brief Change the background by an animated gradient
+     * Change the background by an animated gradient
+     *
+     * @param activity the activity to get the window
      */
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    public static void setStatusBarGradient(Activity activity) {
-        //@// TODO: 20.10.17 Set a non-annimeted gradient to the lower version 
+    public void setStatusBarGradient(Activity activity) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getSupportActionBar().setBackgroundDrawable(new ColorDrawable(this.getResources().getColor(R.color.wi30)));
             Window window = activity.getWindow();
+            rootView.setBackgroundColor(0x00000000);
             AnimationDrawable background = (AnimationDrawable) activity.getResources().getDrawable(R.drawable.annimation_list);
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
             window.setStatusBarColor(activity.getResources().getColor(R.color.wi30));
@@ -247,20 +274,16 @@ public class PlayerActivity extends AppCompatActivity {
         }
     }
 
-
+    /**
+     * Inner class to update the seek bar while the music is playing
+     */
     private class SeekBarAsyncTaskRunner extends AsyncTask<Void, Integer, Void> {
-
-        /**
-         * @brief Change the background by an animated gradient
-         */
         @Override
         protected Void doInBackground(Void... params) {
             // The isCancelled is needed if you want to kill the thread
-            while (mMediaPlayer != null && ! isCancelled()) {
+            while (mMediaPlayer != null && !isCancelled()) {
                 try {
                     Thread.sleep(300);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -275,7 +298,12 @@ public class PlayerActivity extends AppCompatActivity {
         protected void onProgressUpdate(Integer... progress) {
             if (mMediaPlayer != null && mMediaPlayer.isPlaying()) {
                 // Update the view
-                SimpleDateFormat sdf = new SimpleDateFormat("mm:ss");
+                SimpleDateFormat sdf = new SimpleDateFormat("hh:mm:ss");
+
+                if (mMediaPlayer.getDuration() < 3600000) {
+                    sdf = new SimpleDateFormat("mm:ss");
+                }
+
                 int mediaPos_new = mMediaPlayer.getCurrentPosition();
                 int mediaMax_new = mMediaPlayer.getDuration();
                 seekProgress.setMax(mediaMax_new);

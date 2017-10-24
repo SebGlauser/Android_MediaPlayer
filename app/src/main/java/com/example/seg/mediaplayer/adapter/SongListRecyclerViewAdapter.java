@@ -16,10 +16,10 @@ import java.util.Date;
 import java.util.List;
 
 /**
+ * The recycler adapter of a list of song
+ *
  * @author Sebastien Glauser
- * @version 1.0.0
- * @since 18.10.2017
- * @brief The recycler adapter of a list of song
+ * @date 18.10.2017
  */
 
 public class SongListRecyclerViewAdapter extends RecyclerView.Adapter<SongListRecyclerViewAdapter.ViewHolder>{
@@ -42,10 +42,11 @@ public class SongListRecyclerViewAdapter extends RecyclerView.Adapter<SongListRe
 
         // Get back the song on fx of the position
         Song song = songsList.get(position);
+        SimpleDateFormat sdf = new SimpleDateFormat("hh:mm:ss");
 
-        // Create a format for the duration
-        // @// TODO: 20.10.17 Manage more than 1h durations
-        SimpleDateFormat sdf = new SimpleDateFormat("mm:ss");
+        if (song.getDuration() < 3600000) {
+            sdf = new SimpleDateFormat("mm:ss");
+        }
 
         // Fill the layout
         holder.title.setText(song.getName());

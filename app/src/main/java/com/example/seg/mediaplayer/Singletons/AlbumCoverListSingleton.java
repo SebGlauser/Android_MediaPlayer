@@ -15,10 +15,11 @@ import java.util.HashMap;
 import java.util.Iterator;
 
 /**
- * @Author Sebastien Glauser
- * @date 18.10.2017
- * @brief This singleton is a hashmap with the cover and the album id. The main purpose of this
+ * This singleton is a hash map with the cover and the album id. The main purpose of this
  * class is to improve significantly the performance of the recyclerView
+ *
+ * @author  Sebastien Glauser
+ * @date 18.10.2017
  */
 
 public class AlbumCoverListSingleton {
@@ -34,7 +35,9 @@ public class AlbumCoverListSingleton {
     }
 
     /**
-     * @brief T
+     * Return the bitmap associated to a album id
+     * @param albumId The album id to get back the bitmap
+     * @param context The context that call this function
      */
 
     public static Bitmap getBitmap(Context context, Long albumId) {
@@ -62,6 +65,7 @@ public class AlbumCoverListSingleton {
             }
 
         } catch (Exception e) {
+            e.printStackTrace();
         }
 
         mBitmapMap.put(albumId, bm);

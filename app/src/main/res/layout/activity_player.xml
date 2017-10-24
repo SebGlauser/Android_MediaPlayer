@@ -6,8 +6,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#00000000"
+    android:background="@drawable/gradient_1"
     android:layout_margin="16dp"
+    android:id="@+id/root_layout"
     tools:context="com.example.seg.mediaplayer.PlayerActivity">
 
 
@@ -20,7 +21,7 @@
         android:layout_margin="16dp"
         android:id="@+id/cover"
         app:srcCompat="@drawable/ic_music_note_black_24dp"
-        />
+        android:contentDescription="" />
 
 
     <LinearLayout
@@ -35,7 +36,7 @@
             android:layout_height="wrap_content"
             android:maxLines="1"
             android:textColor="#ffffff"
-            android:textSize="16dp"
+            android:textSize="16sp"
             android:textStyle="bold" />
 
         <TextView
@@ -73,7 +74,7 @@
         <SeekBar
             android:id="@+id/bar_progression"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:layout_weight="1"
             android:backgroundTint="#C0FFFFFF"
             android:progressTint="@android:color/white"
@@ -98,11 +99,10 @@
 
         <ImageButton
             android:id="@+id/previous_btn"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
-            android:layout_weight="1"
             android:adjustViewBounds="true"
             android:background="?android:selectableItemBackground"
             android:scaleType="fitCenter"
@@ -117,7 +117,8 @@
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
             android:background="?android:selectableItemBackground"
-            app:srcCompat="@drawable/ic_play_arrow_black_24dp" />
+            app:srcCompat="@drawable/ic_play_arrow_black_24dp"
+            android:contentDescription="" />
 
         <ImageButton
             android:id="@+id/next_btn"
@@ -128,7 +129,8 @@
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
             android:background="?android:selectableItemBackground"
-            app:srcCompat="@drawable/ic_skip_next_black_24dp" />
+            app:srcCompat="@drawable/ic_skip_next_black_24dp"
+            android:contentDescription="" />
     </LinearLayout>
 
 

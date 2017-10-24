@@ -7,10 +7,10 @@ import com.example.seg.mediaplayer.Singletons.AlbumCoverListSingleton;
 
 
 /**
+ * This class is used to instantiate a song
+ *
  * @author Sebastien Glauser
- * @version 1.0.0
- * @since 18.10.2017
- * @brief This class is used to instantiate a song
+ * @date 18.10.2017
  */
 
 public class Song {
@@ -23,6 +23,8 @@ public class Song {
     private Long duration;      ///< The duration in ms
 
     /**
+     * Constructor
+     *
      * @param context  The context used to send to the AlbumCoverListSingleton
      * @param id       The id of the song
      * @param album_id Used to get back the cover
@@ -42,88 +44,99 @@ public class Song {
     }
 
     /**
+     * Get the title of the song
+     *
      * @return name The title of the song
-     * @brief get the title of the song
      */
     public String getName() {
         return name;
     }
 
     /**
+     * Set the name
+     *
      * @param name The title of the song
-     * @brief Set the name
      */
     public void setName(String name) {
         this.name = name;
     }
 
     /**
+     * Get the author of the song
+     *
      * @return The author of the song
-     * @brief get the author of the song
      */
     public String getAuthor() {
         return author;
     }
 
     /**
+     * Set the author
+     *
      * @param author The author of this title
-     * @brief Set the
      */
     public void setAuthor(String author) {
         this.author = author;
     }
 
     /**
+     * Get the id of the song
+     *
      * @return name The id of the song
-     * @brief get the id of the song
      */
     public Long getId() {
         return id;
     }
 
     /**
+     * Set the id of the song
+     *
      * @param id The id of the song
-     * @brief Set the id of the song
      */
     public void setId(Long id) {
         this.id = id;
     }
 
     /**
+     * Return the cover in Bitmap
+     *
      * @return The album cover note that if there is no cover this function will return NULL
-     * @brief Return the cover in Bitmap
      */
     public Bitmap getAlbumart() {
         return AlbumCoverListSingleton.getBitmap(context, album_id);
     }
 
     /**
+     * Get the path of the song
+     *
      * @return The path of the song
-     * @brief get the path of the song
      */
     public String getPath() {
         return path;
     }
 
     /**
+     * Set the path
+     *
      * @param path The path of the song
-     * @brief Set the path
      */
     public void setPath(String path) {
         this.path = path;
     }
 
     /**
+     * Get the duration of the song
+     *
      * @return The duration of the song
-     * @brief get the duration of the song
      */
     public Long getDuration() {
         return duration;
     }
 
     /**
+     * Set the duration
+     *
      * @param duration The duration in ms
-     * @brief Set the duration
      */
     public void setDuration(Long duration) {
         this.duration = duration;

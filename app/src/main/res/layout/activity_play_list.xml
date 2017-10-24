@@ -4,8 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.example.seg.mediaplayer.PlayListActivity"
-    android:background="#00000000"
-    android:id="@+id/root_layout"
+    android:background="@drawable/gradient_1"
+    android:id="@+id/root_layout2"
     >
 
 

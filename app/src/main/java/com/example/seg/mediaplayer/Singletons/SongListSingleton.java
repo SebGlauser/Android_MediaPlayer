@@ -12,9 +12,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @Author Sebastien Glauser
+ * This singleton contain the list of song
+ *
+ * @author Sebastien Glauser
  * @date 20.10.2017
- * @brief This singleton contain the list of song
  */
 
 public class SongListSingleton {
@@ -23,8 +24,9 @@ public class SongListSingleton {
 
 
     /**
+     * This function is used to return the list of song
+     *
      * @return The list of song
-     * @breif This function is used to return the list of song
      */
     public static List<Song> getInstance() {
         return mSongList;
@@ -40,20 +42,20 @@ public class SongListSingleton {
         mIsPopulated = Boolean.TRUE;
 
         ContentResolver musicResolver = context.getContentResolver();
-        Uri musicUri = android.provider.MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
+        Uri musicUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
         Cursor musicCursor = musicResolver.query(musicUri, null, null, null, null);
         if (musicCursor != null && musicCursor.moveToFirst()) {
             //get columns
             int titleColumn = musicCursor.getColumnIndex
-                    (android.provider.MediaStore.Audio.Media.TITLE);
+                    (MediaStore.Audio.Media.TITLE);
             int album = musicCursor.getColumnIndex
                     (MediaStore.Audio.Media.ALBUM_ID);
             int duration = musicCursor.getColumnIndex
                     (MediaStore.Audio.Media.DURATION);
             int idColumn = musicCursor.getColumnIndex
-                    (android.provider.MediaStore.Audio.Media._ID);
+                    (MediaStore.Audio.Media._ID);
             int artistColumn = musicCursor.getColumnIndex
-                    (android.provider.MediaStore.Audio.Media.ARTIST);
+                    (MediaStore.Audio.Media.ARTIST);
             int data = musicCursor.getColumnIndex(MediaStore.Audio.Media.DATA);
             //add songs to list
             do {
@@ -69,5 +71,6 @@ public class SongListSingleton {
             }
             while (musicCursor.moveToNext());
         }
+        musicCursor.close();
     }
 }
